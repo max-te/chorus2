@@ -20,8 +20,8 @@
     setMeta: ->
       epNum = @themeTag('span', {class: 'ep-num'}, @model.escape('season') + 'x' + @model.escape('episode') + ' ')
       epNumFull = @themeTag('span', {class: 'ep-num-full'}, t.gettext('Episode') + ' ' + @model.escape('episode'))
-      showLink = @themeLink(@model.escape('showtitle') + ' ', 'tvshow/' + @model.escape('tvshowid'), {className: 'show-name'})
-      subTitleTip = if @model.escape('firstaired') then {title: tr('First aired') + ': ' + @model.escape('firstaired')} else {}
+      showLink = @themeLink(@model.get('showtitle') + ' ', 'tvshow/' + encodeURIComponent(@model.get('tvshowid')), {className: 'show-name'})
+      subTitleTip = if @model.get('firstaired') then {title: tr('First aired') + ': ' + @model.get('firstaired')} else {}
       @model.set
         labelHtml: epNum + @model.get('title')
         subtitleHtml: @themeTag('div', subTitleTip, showLink + epNumFull)
