@@ -7,16 +7,16 @@
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-this.Kodi.module("SettingsApp.Show.Search", function(Search, App, Backbone, Marionette, $, _) {
+this.Kodi.module("SettingsApp.Show.Search", function (Search, App, Backbone, Marionette, $, _) {
 
   return Search.Controller = class Controller extends App.SettingsApp.Show.Base.Controller {
 
-    // Callback gets passed the collection to process
     constructor(...args) {
-      this.onReady = this.onReady.bind(this);
       super(...args);
+      this.onReady = this.onReady.bind(this);
     }
 
+    // Callback gets passed the collection to process
     getCollection(callback) {
       this.collection = App.request('searchAddons:entities');
       return callback(this.collection);
@@ -52,7 +52,7 @@ this.Kodi.module("SettingsApp.Show.Search", function(Search, App, Backbone, Mari
         id: 'add-another',
         class: 'add-another-wrapper',
         children: [
-          {type: 'button', value: 'Add another', id: 'add-another'}
+          { type: 'button', value: 'Add another', id: 'add-another' }
         ]
       });
       return form;
@@ -95,7 +95,7 @@ this.Kodi.module("SettingsApp.Show.Search", function(Search, App, Backbone, Mari
       }
 
       // Add another button callback
-      $('#form-edit-add-another', $ctx).click(function(e) {
+      $('#form-edit-add-another', $ctx).click(function (e) {
         e.preventDefault();
         const blank = self.getBlank($(".item-row").length);
         const row = self.getRow(blank);
@@ -105,18 +105,18 @@ this.Kodi.module("SettingsApp.Show.Search", function(Search, App, Backbone, Mari
       });
 
       // Reset default link
-      return $('.restore-defaults', $ctx).on("click", e => {});
+      return $('.restore-defaults', $ctx).on("click", e => { });
     }
-        // this should clear all.
+    // this should clear all.
 
     getBlank(weight) {
-      return {weight, title: '', url: '', media: 'music'};
+      return { weight, title: '', url: '', media: 'music' };
     }
 
     // Things to refresh after render
     binds() {
       const $ctx = $('.settings-form');
-      $('.remove-item', $ctx).on("click", function(e) {
+      $('.remove-item', $ctx).on("click", function (e) {
         return $(this).closest('.group-parent', $ctx).remove();
       });
       return $.material.init();
@@ -129,12 +129,12 @@ this.Kodi.module("SettingsApp.Show.Search", function(Search, App, Backbone, Mari
         id: 'item-' + item.weight,
         class: 'item-row draggable-row',
         children: [
-          {id: 'title-' + i, name: 'title[]', type: 'textfield', title: 'Title', defaultValue: item.title},
-          {id: 'url-' + i, name: 'url[]', type: 'textfield', title: 'Url', defaultValue: item.url},
-          {id: 'media-' + i, name: 'media[]', type: 'select', title: 'Media', defaultValue: item.media, options: {music: 'Music', video: 'Video'}},
-          {id: 'weight-' + i, name: 'weight[]', type: 'hidden', title: '', defaultValue: i},
-          {id: 'id-' + i, name: 'id[]', type: 'hidden', title: '', defaultValue: 'custom.addon.' + i},
-          {id: 'remove-' + i, type: 'markup', markup: '<span class="remove-item">&times;</span>'}
+          { id: 'title-' + i, name: 'title[]', type: 'textfield', title: 'Title', defaultValue: item.title },
+          { id: 'url-' + i, name: 'url[]', type: 'textfield', title: 'Url', defaultValue: item.url },
+          { id: 'media-' + i, name: 'media[]', type: 'select', title: 'Media', defaultValue: item.media, options: { music: 'Music', video: 'Video' } },
+          { id: 'weight-' + i, name: 'weight[]', type: 'hidden', title: '', defaultValue: i },
+          { id: 'id-' + i, name: 'id[]', type: 'hidden', title: '', defaultValue: 'custom.addon.' + i },
+          { id: 'remove-' + i, type: 'markup', markup: '<span class="remove-item">&times;</span>' }
         ]
       };
     }

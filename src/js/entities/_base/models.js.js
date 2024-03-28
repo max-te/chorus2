@@ -9,17 +9,17 @@
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-this.Kodi.module("Entities", function(Entities, App, Backbone, Marionette, $, _) {
+this.Kodi.module("Entities", function (Entities, App, Backbone, Marionette, $, _) {
 
   return Entities.Model = class Model extends Backbone.Model {
 
-    //# Set our custom cache keys.
     constructor(...args) {
+      super(...args);
       this.saveSuccess = this.saveSuccess.bind(this);
       this.saveError = this.saveError.bind(this);
-      super(...args);
     }
 
+    //# Set our custom cache keys.
     getCacheKey(options) {
       const key = this.constructor.name;
       return key;
@@ -28,9 +28,9 @@ this.Kodi.module("Entities", function(Entities, App, Backbone, Marionette, $, _)
     destroy(options) {
       if (options == null) { options = {}; }
       _.defaults(options,
-        {wait: true});
+        { wait: true });
 
-      this.set({_destroy: true});
+      this.set({ _destroy: true });
       return super.destroy(options);
     }
 
@@ -44,8 +44,8 @@ this.Kodi.module("Entities", function(Entities, App, Backbone, Marionette, $, _)
 
       _.defaults(options, {
         wait: true,
-        success:  _.bind(this.saveSuccess, this, isNew, options.collection),
-        error:    _.bind(this.saveError, this)
+        success: _.bind(this.saveSuccess, this, isNew, options.collection),
+        error: _.bind(this.saveError, this)
       }
       );
 
@@ -59,9 +59,11 @@ this.Kodi.module("Entities", function(Entities, App, Backbone, Marionette, $, _)
         if (collection) { collection.trigger("model:created", this); }
         return this.trigger("created", this);
       } else { //# model is being updated
-        if (collection == null) { ({
-          collection
-        } = this); } //# if model has collection property defined, use that if no collection option exists
+        if (collection == null) {
+          ({
+            collection
+          } = this);
+        } //# if model has collection property defined, use that if no collection option exists
         if (collection) { collection.trigger("model:updated", this); }
         return this.trigger("updated", this);
       }
@@ -69,7 +71,7 @@ this.Kodi.module("Entities", function(Entities, App, Backbone, Marionette, $, _)
 
     saveError(model, xhr, options) {
       //# set errors directly on the model unless status returned was 500 or 404
-      if ((xhr.status !== 500) && (xhr.status !== 404)) { return this.set({_errors: __guard__($.parseJSON(xhr.responseText), x => x.errors)}); }
+      if ((xhr.status !== 500) && (xhr.status !== 404)) { return this.set({ _errors: __guard__($.parseJSON(xhr.responseText), x => x.errors) }); }
     }
   };
 });

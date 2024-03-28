@@ -69,6 +69,16 @@ module.exports = function (grunt) {
         // Sound manager.
         'src/lib/soundmanager/script/soundmanager2.js'
       ],
+      js: [
+        'src/js/*.js',
+        'src/js/helpers/{,**}/*.js',
+        'src/js/config/{,**}/*.js',
+        'src/js/entities/{,**}/*.js',
+        'src/js/controllers/{,**}/*.js',
+        'src/js/views/{,**}/*.js',
+        'src/js/components/{,**}/*.js',
+        'src/js/apps/{,**}/*.js'
+      ],
       dist: [
         // Libs, template and the app, all minified.
         // TODO: Is it worth the 200K it saves to sacrifice debugging, currently not used
@@ -138,11 +148,11 @@ module.exports = function (grunt) {
         // file base is changed.
         cliArgs: ['--gruntfile', require('path').join(cwd, 'Gruntfile.js')]
       },
-      sass: {
-        files: [ggp('themeSrc') + 'sass/{,**/}*.{scss,sass}'],
-        tasks: ['compass:dev'],
-        options: {}
-      },
+      // sass: {
+      //   files: [ggp('themeSrc') + 'sass/{,**/}*.{scss,sass}'],
+      //   tasks: ['compass:dev'],
+      //   options: {}
+      // },
       images: {
         files: [ggp('themeSrc') + 'images/**']
       },
@@ -153,10 +163,10 @@ module.exports = function (grunt) {
         files: [ggp('jsSrc') + '/**/*.eco'],
         tasks: ['eco', 'concat:libs', 'uglify:libs', 'concat:dev']
       },
-      coffee: {
-        files: [ggp('jsSrc') + '{,**/}*.coffee'],
-        tasks: ['coffee', 'concat:dev']
-      },
+      // coffee: {
+      //   files: [ggp('jsSrc') + '{,**/}*.coffee'],
+      //   tasks: ['coffee', 'concat:dev']
+      // },
       po2json: {
         files: [ggp('langSrcStrings')],
         tasks: ['po2json']
@@ -176,42 +186,42 @@ module.exports = function (grunt) {
     },
 
     // Compile compass.
-    compass: {
-      options: {
-        config: ggp('themeSrc') + 'config.rb',
-        bundleExec: true,
-        force: true
-      },
-      dev: {
-        options: {
-          environment: 'development'
-        }
-      },
-      dist: {
-        options: {
-          environment: 'production',
-          outputStyle: 'compressed'
-        }
-      }
-    },
+    // compass: {
+    //   options: {
+    //     config: ggp('themeSrc') + 'config.rb',
+    //     bundleExec: true,
+    //     force: true
+    //   },
+    //   dev: {
+    //     options: {
+    //       environment: 'development'
+    //     }
+    //   },
+    //   dist: {
+    //     options: {
+    //       environment: 'production',
+    //       outputStyle: 'compressed'
+    //     }
+    //   }
+    // },
 
     // Compile coffee.
-    coffee: {
-      options: {
-        bare: true,
-        join: true
-      },
-      files: {
-        expand: true,
-        flatten: true,
-        cwd: ggp('jsSrc'),
-        src: ggs('coffeeStack'),
-        dest: ggp('jsBuild'),
-        rename: function (dest, src) {
-          return dest + 'app.js';
-        }
-      }
-    },
+    // coffee: {
+    //   options: {
+    //     bare: true,
+    //     join: true
+    //   },
+    //   files: {
+    //     expand: true,
+    //     flatten: true,
+    //     cwd: ggp('jsSrc'),
+    //     src: ggs('coffeeStack'),
+    //     dest: ggp('jsBuild'),
+    //     rename: function (dest, src) {
+    //       return dest + 'app.js';
+    //     }
+    //   }
+    // },
 
     // Compile all the *.eco templates into a single tpl.js
     eco: {
@@ -237,12 +247,18 @@ module.exports = function (grunt) {
           watchTask: true,
           injectChanges: true,
           hostname: "192.168.0.5",
-          proxy: "192.168.0.10:8080",
+          proxy: "elec",
           open: false,
           ports: {
             min: 3102,
             max: 3103
-          }
+          },
+          serveStatic: [
+            {
+              route: '/js',
+              dir: './dist/js'
+            }
+          ],
         }
       }
     },
@@ -271,6 +287,10 @@ module.exports = function (grunt) {
       libs: {
         src: ggs('concatStack', 'src'),
         dest: ggp('jsBuild') + 'libs.js'
+      },
+      app: {
+        src: ggs('concatStack', 'js'),
+        dest: ggp('jsBuild') + 'app.js'
       },
       dist: {
         src: ggs('concatStack', 'dist'),
@@ -360,9 +380,9 @@ module.exports = function (grunt) {
       // for translating and converting to html.
       lang: {
         files: [
-          {src: 'readme.md', dest: 'src/lang/en/app-readme.md'},
-          {src: 'changelog.txt', dest: 'src/lang/en/app-changelog.md'},
-          {src: 'src/lang/readme.md', dest: 'src/lang/en/lang-readme.md'}
+          { src: 'readme.md', dest: 'src/lang/en/app-readme.md' },
+          { src: 'changelog.txt', dest: 'src/lang/en/app-changelog.md' },
+          { src: 'src/lang/readme.md', dest: 'src/lang/en/lang-readme.md' }
         ]
       }
     }
@@ -370,13 +390,13 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-compass');
+  // grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-browser-sync');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
+  // grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-eco');
   grunt.loadNpmTasks('grunt-po2json');
   grunt.loadNpmTasks('grunt-marked');
@@ -389,7 +409,7 @@ module.exports = function (grunt) {
    * Eg "grunt lang" will rebuild languages.
    */
 
-    // Development watch task.
+  // Development watch task.
   grunt.registerTask('default', ['browserSync:dev', 'watch']);
 
   // Languages (strings and pages) only.
@@ -401,12 +421,13 @@ module.exports = function (grunt) {
     'copy:lang',
     'marked',
     'eco',
-    'coffee',
+    // 'coffee',
+    'concat:app',
     'concat:libs',
     'uglify:libs',
     // 'uglify:app', // Uncomment if concat:dist is used.
     'concat:dev', // App is not minified for in the wild debugging. Change to concat:dist to save ~200K
-    'compass:dist'
+    // 'compass:dist' // Broken
   ]);
 
 };

@@ -7,18 +7,18 @@
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-this.Kodi.module("SettingsApp.Show.navMain", function(NavMain, App, Backbone, Marionette, $, _) {
+this.Kodi.module("SettingsApp.Show.navMain", function (NavMain, App, Backbone, Marionette, $, _) {
 
   //# There is a lot of jQuery'ing happening in this file, if you require the same functionality
   //# again (draggable lists) you should abstract it in a nicer way
   return NavMain.Controller = class Controller extends App.SettingsApp.Show.Base.Controller {
 
-    // Callback gets passed the collection to process
     constructor(...args) {
-      this.onReady = this.onReady.bind(this);
       super(...args);
+      this.onReady = this.onReady.bind(this);
     }
 
+    // Callback gets passed the collection to process
     getCollection(callback) {
       const collection = App.request('navMain:entities');
       return $.getJSON('lib/icons/mdi.json', iconList => callback({
@@ -56,7 +56,7 @@ this.Kodi.module("SettingsApp.Show.navMain", function(NavMain, App, Backbone, Ma
         id: 'add-another',
         class: 'add-another-wrapper',
         children: [
-          {type: 'button', value: 'Add another', id: 'add-another'}
+          { type: 'button', value: 'Add another', id: 'add-another' }
         ]
       });
       return form;
@@ -91,9 +91,9 @@ this.Kodi.module("SettingsApp.Show.navMain", function(NavMain, App, Backbone, Ma
       this.binds();
 
       // Add another button callback
-      $('#form-edit-add-another', $ctx).click(function(e) {
+      $('#form-edit-add-another', $ctx).click(function (e) {
         e.preventDefault();
-        const blank = {weight: $(".nav-item-row").length + 1, title: '', path: '', icon: 'mdi-action-extension'};
+        const blank = { weight: $(".nav-item-row").length + 1, title: '', path: '', icon: 'mdi-action-extension' };
         const row = self.getRow(blank);
         const formView = App.request("form:render:items", [row]);
         $(this).closest('.add-another-wrapper').before(formView.render().$el);
@@ -122,10 +122,10 @@ this.Kodi.module("SettingsApp.Show.navMain", function(NavMain, App, Backbone, Ma
     // Things to refresh after render
     binds() {
       const $ctx = $('.settings-form');
-      $('select[id^="form-edit-icon"]', $ctx).once('icon-changer').on("change", function(e) {
+      $('select[id^="form-edit-icon"]', $ctx).once('icon-changer').on("change", function (e) {
         return $(this).closest('.group-parent', $ctx).find('i').first().attr('class', $(this).val());
       });
-      $('.remove-item', $ctx).on("click", function(e) {
+      $('.remove-item', $ctx).on("click", function (e) {
         return $(this).closest('.group-parent', $ctx).remove();
       });
       return $.material.init();
@@ -142,12 +142,12 @@ this.Kodi.module("SettingsApp.Show.navMain", function(NavMain, App, Backbone, Ma
         id: 'item-' + item.weight,
         class: 'nav-item-row draggable-row',
         children: [
-          {id: 'title-' + i, name: 'title[]', type: 'textfield', title: 'Title', defaultValue: item.title},
-          {id: 'path-' + i, name: 'path[]', type: 'textfield', title: 'Url', defaultValue: item.path},
-          {id: 'icon-' + i, name: 'icon[]', type: 'select', titleHtml: 'Icon' + icon, defaultValue: item.icon, options: icons},
-          {id: 'weight-' + i, name: 'weight[]', type: 'hidden', title: '', defaultValue: i},
-          {id: 'id-' + i, name: 'id[]', type: 'hidden', title: '', defaultValue: (1000 + i)},
-          {id: 'remove-' + i, type: 'markup', markup: '<span class="remove-item">&times;</span>'}
+          { id: 'title-' + i, name: 'title[]', type: 'textfield', title: 'Title', defaultValue: item.title },
+          { id: 'path-' + i, name: 'path[]', type: 'textfield', title: 'Url', defaultValue: item.path },
+          { id: 'icon-' + i, name: 'icon[]', type: 'select', titleHtml: 'Icon' + icon, defaultValue: item.icon, options: icons },
+          { id: 'weight-' + i, name: 'weight[]', type: 'hidden', title: '', defaultValue: i },
+          { id: 'id-' + i, name: 'id[]', type: 'hidden', title: '', defaultValue: (1000 + i) },
+          { id: 'remove-' + i, type: 'markup', markup: '<span class="remove-item">&times;</span>' }
         ]
       };
     }

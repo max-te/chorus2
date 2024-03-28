@@ -9,15 +9,15 @@
  * DS208: Avoid top-level this
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-this.Kodi.module("LandingApp.Show", function(Show, App, Backbone, Marionette, $, _) {
+this.Kodi.module("LandingApp.Show", function (Show, App, Backbone, Marionette, $, _) {
 
 
   return Show.Controller = class Controller extends App.Controllers.Base {
 
     constructor(...args) {
+      super(...args);
       this.getSections = this.getSections.bind(this);
       this.renderSection = this.renderSection.bind(this);
-      super(...args);
     }
 
     initialize(options) {
@@ -67,8 +67,8 @@ this.Kodi.module("LandingApp.Show", function(Show, App, Backbone, Marionette, $,
     getSection(section) {
       section = this.addFilterValue(section);
       const opts = {
-        sort: {method: section.sort, order: section.order},
-        limit: {start: 0, end: section.limit},
+        sort: { method: section.sort, order: section.order },
+        limit: { start: 0, end: section.limit },
         addFields: ['fanart'],
         cache: false,
         success: collection => {
@@ -94,7 +94,7 @@ this.Kodi.module("LandingApp.Show", function(Show, App, Backbone, Marionette, $,
       App.listenTo(setView, "show", () => {
         return setView.regionCollection.show(view);
       });
-      App.listenTo(setView, 'landing:set:more', viewItem => App.navigate(viewItem.model.get('section').moreLink, {trigger: true}));
+      App.listenTo(setView, 'landing:set:more', viewItem => App.navigate(viewItem.model.get('section').moreLink, { trigger: true }));
       if (this.content[`regionSection${section.idx}`]) {
         return this.content[`regionSection${section.idx}`].show(setView);
       }
